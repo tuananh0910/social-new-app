@@ -30,9 +30,9 @@ const tagsStyles = {
 }
 
 const RecipeDetailCard = ({
-    item,
+    item = {},
     router,
-    currentUser,
+    currentUser = {},
     showDelete = false,
     onDelete = () => { },
     onEdit = () => { }
@@ -52,28 +52,28 @@ const RecipeDetailCard = ({
         ])
     }
 
-    const createAt = moment(item?.created_at).format('MMM D');
+    const createAt = item?.created_at ? moment(item.created_at).format('MMM D') : '';
 
     const diets = item.diets ? JSON.parse(item.diets) : [];
     const ingredients = item.ingredients ? JSON.parse(item.ingredients) : [];
 
     return (
         <View style={[styles.container]}>
-            <View style={styles.header}>
-                <View style={styles.userInfo}>
-                    <Avatar
-                        size={hp(4.5)}
-                        uri={item?.user?.image}
-                        rounded={theme.radius.md}
-                    />
-                    <View style={{ gap: 2 }}>
-                        <Text style={styles.username}>{item?.user?.name}</Text>
-                        <Text style={styles.recipeTime}>{createAt}</Text>
+            {item?.user && (
+                <View style={styles.header}>
+                    <View style={styles.userInfo}>
+                        <Avatar
+                            size={hp(4.5)}
+                            uri={item.user.image}
+                            rounded={theme.radius.md}
+                        />
+                        <View style={{ gap: 2 }}>
+                            <Text style={styles.username}>{item.user.name || 'Unknown'}</Text>
+                            <Text style={styles.recipeTime}>{createAt}</Text>
+                        </View>
                     </View>
-                </View>
 
-                {
-                    showDelete && currentUser.id == item?.userId && (
+                    {showDelete && currentUser?.id === item.userId && (
                         <View style={styles.actions}>
                             <TouchableOpacity onPress={() => onEdit(item)}>
                                 <Feather name="edit-3" size={hp(2.5)} color={theme.colors.text} />
@@ -82,35 +82,31 @@ const RecipeDetailCard = ({
                                 <MaterialIcons name="delete-outline" size={hp(3)} color={theme.colors.rose} />
                             </TouchableOpacity>
                         </View>
-                    )
-                }
-            </View>
+                    )}
+                </View>
+            )}
 
             <View style={styles.content}>
-                <Text style={styles.recipeTitle}>{item.title}</Text>
-                {
-                    item?.file && item?.file?.includes('recipeImages') && (
-                        <Image
-                            source={getSupabaseFileUrl(item?.file)}
-                            transition={100}
-                            style={styles.recipeMedia}
-                            contentFit='cover'
-                        />
-                    )
-                }
+                <Text style={styles.recipeTitle}>{item.title || 'Untitled Recipe'}</Text>
+                {item?.file?.includes('recipeImages') && (
+                    <Image
+                        source={getSupabaseFileUrl(item.file)}
+                        transition={100}
+                        style={styles.recipeMedia}
+                        contentFit="cover"
+                    />
+                )}
 
-                {
-                    item?.file && item?.file?.includes('recipeVideos') && (
-                        <Video
-                            source={getSupabaseFileUrl(item?.file)}
-                            transition={100}
-                            style={[styles.recipeMedia, { height: hp(30) }]}
-                            resizeMode='contain'
-                            useNativeControls
-                            isLooping
-                        />
-                    )
-                }
+                {item?.file?.includes('recipeVideos') && (
+                    <Video
+                        source={getSupabaseFileUrl(item.file)}
+                        transition={100}
+                        style={[styles.recipeMedia, { height: hp(30) }]}
+                        resizeMode="contain"
+                        useNativeControls
+                        isLooping
+                    />
+                )}
                 <View style={styles.details}>
                     <View style={styles.times}>
                         <Feather name="clock" size={hp(4.5)} color={theme.colors.primary} />

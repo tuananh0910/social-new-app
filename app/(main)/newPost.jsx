@@ -50,7 +50,7 @@ const NewPost = () => {
 
             setTimeout(() => {
                 editorRef?.current?.setContentHTML(post.body);
-            }, 2000);
+            }, 3000);
         }
     }, []);
 
@@ -159,7 +159,7 @@ const NewPost = () => {
             setFile(null);
             bodyRef.current = '';
             editorRef.current?.setContentHTML('');
-            router.back();
+            router.replace('/home');
         } else {
             Alert.alert('Post', res.msg);
         }

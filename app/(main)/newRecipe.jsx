@@ -127,7 +127,7 @@ const NewRecipe = () => {
             setSelectedDiets(recipe.diets ? JSON.parse(recipe.diets) : []);
             setTimeout(() => {
                 editorRef?.current?.setContentHTML(recipe.method);
-            }, 2000);
+            }, 3000);
         }
     }, []);
 
@@ -196,7 +196,7 @@ const NewRecipe = () => {
         console.log('recipe res: ', res);
         if (res.success) {
             resetForm();  // Reset lại form
-            router.back();
+            router.replace('/recipes');
         } else {
             Alert.alert('Recipe', res.msg);
         }

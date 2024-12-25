@@ -50,18 +50,26 @@ const RecipeDetails = () => {
 
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.list}>
-                <Header title="Recipe Details" />
-                <RecipeDetailCard
-                    item={{ ...recipe }}
-                    currentUser={user}
-                    router={router}
-                    hasShadow={false}
-                    showDelete={true}
-                    onDelete={onDeleteRecipe}
-                    onEdit={onEditRecipe}
-                />
-            </ScrollView>
+            {startLoading ? (
+                <View style={styles.center}>
+                    <Loading />
+                </View>
+            ) : recipe ? (
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.list}>
+                    <Header title="Recipe Details" />
+                    <RecipeDetailCard
+                        item={{ ...recipe }}
+                        currentUser={user}
+                        router={router}
+                        hasShadow={false}
+                        showDelete={true}
+                        onDelete={onDeleteRecipe}
+                        onEdit={onEditRecipe}
+                    />
+                </ScrollView>
+            ) : (
+                <Text style={{ textAlign: 'center', marginTop: 20 }}>Recipe not found!</Text>
+            )}
         </View>
     );
 };
